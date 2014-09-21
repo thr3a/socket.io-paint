@@ -23,8 +23,9 @@ $(function(){
 		drawLine(event);
 		drawing = false;
 	};
-
-
+	canvas.onmouseover = function(event) {
+		drawing = false;
+	};
 
 	function drawLine(event) {
 		var positions = {x: event.pageX, y: event.pageY};
