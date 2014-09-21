@@ -21,6 +21,8 @@ paint = io.on('connection', function(socket){
 
 	socket.on('paint points', function(data) {
 		points.push(data);
+		//制限したい場合
+		//if(points.length = 100) points.shift();
 		paint.emit('paint points', data);
 	});
 });

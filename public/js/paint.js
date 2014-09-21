@@ -5,7 +5,7 @@ $(function(){
 
 	context.lineWidth = 3;
 	context.lineCap = 'round';
-	context.strokeStyle = 'black';
+	var penColor = '#'+Math.floor(Math.random()*0xFFFFFF).toString(16);
 
 	var positioning = null;
 	var drawing = false;
@@ -34,7 +34,7 @@ $(function(){
 			y: positions.y,
 			xp: positioning.x,
 			yp: positioning.y,
-			c: context.strokeStyle
+			color: penColor
 		};
 		paint.json.emit('paint points', points);
 		painting(points);
@@ -42,7 +42,7 @@ $(function(){
 	}
 
 	function painting(points) {
-		context.strokeStyle = points.c;
+		context.strokeStyle = points.color;
 		context.beginPath();
 		context.moveTo(points.x, points.y);
 		context.lineTo(points.xp, points.yp);
@@ -52,5 +52,6 @@ $(function(){
 	var paint = new io.connect();
 	paint.on('paint points', function(points) {
 		painting(points);
+		console.log(points);
 	});
 });
