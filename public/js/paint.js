@@ -11,7 +11,7 @@ $(function(){
 	var drawing = false;
 
 	canvas.onmousedown = function(event) {
-		positioning = {x: event.pageX, y: event.pageY};
+		positioning = getPosition(event);
 		drawing = true;
 	};
 	canvas.onmousemove = function(event) {
@@ -28,7 +28,7 @@ $(function(){
 	};
 
 	function drawLine(event) {
-		var positions = {x: event.pageX, y: event.pageY};
+		var positions = getPosition(event);
 		var points = {
 			x: positions.x,
 			y: positions.y,
@@ -49,9 +49,18 @@ $(function(){
 		context.stroke();
 		context.closePath();
 	}
+	//イベント座標を取得
+	function getPosition(event){
+		//canvas自体の左上座標を取得
+		var rect = $(event.target).offset();
+		return {x: event.pageX - rect.left, y: event.pageY - rect.top};
+	}
+	
 	var paint = new io.connect();
 	paint.on('paint points', function(points) {
 		painting(points);
-		console.log(points);
+	});
+	paint.on('paint clear', function() {
+		context.clearRect(0, 0, canvas.width, canvas.height);
 	});
 });

@@ -22,7 +22,17 @@ paint = io.on('connection', function(socket){
 	socket.on('paint points', function(data) {
 		points.push(data);
 		//制限したい場合
-		//if(points.length = 100) points.shift();
+		//if(points.length = 100000) points.shift();
 		paint.emit('paint points', data);
 	});
 });
+var CronJob = require('cron').CronJob;
+var job = new CronJob({
+	cronTime: '*/5 * * * *',
+	onTick: function() {
+		points = [];
+		paint.emit('paint clear');
+	},
+	start: false
+});
+job.start();
